@@ -1,6 +1,6 @@
 ### Installing
 
 ```
-docker build -t brsynth/rpreport-standalone .
+docker build -t brsynth/rpreport-rest .
 ```
 
