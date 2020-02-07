@@ -1,7 +1,5 @@
-#!/usr/bin/env python3
+#!/usr/bin/python
 
-import sys
-sys.path.insert(0, '/home/')
 import rpSBML
 
 
@@ -48,7 +46,8 @@ def writeLine(rpsbml, csvfi, pathway_id='rp_pathway'):
     except (KeyError, AttributeError) as e:
         to_write.append('')
         to_write.append('')
-    csvfi.writerow(to_write) 
+    csvfi.writerow(to_write)
+    #csvfi.writerow([i.encode('utf-8') for i in to_write])
     ### reaction
     for member in rp_pathway.getListOfMembers():
         reaction = rpsbml.model.getReaction(member.getIdRef())
@@ -74,4 +73,5 @@ def writeLine(rpsbml, csvfi, pathway_id='rp_pathway'):
         except (KeyError, AttributeError) as e:
             to_write.append('')
             to_write.append('')
-        csvfi.writerow(to_write) 
+        csvfi.writerow(to_write)
+        #csvfi.writerow([i.encode('utf-8') for i in to_write])
