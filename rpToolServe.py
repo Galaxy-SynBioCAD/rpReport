@@ -92,7 +92,6 @@ class RestQuery(Resource):
     """
     def post(self):
         input_tar = request.files['input_tar']
-        print(type(input_tar))
         params = json.load(request.files['data'])
         output_csv = io.StringIO()
         #output_csv = io.BytesIO()
