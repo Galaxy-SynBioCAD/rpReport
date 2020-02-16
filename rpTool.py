@@ -75,3 +75,12 @@ def writeLine(rpsbml, csvfi, pathway_id='rp_pathway'):
             to_write.append('')
         csvfi.writerow(to_write)
         #csvfi.writerow([i.encode('utf-8') for i in to_write])
+
+
+##
+#
+#
+def writeJSON(rpsbml, pathway_id='rp_pathway'):
+    groups = rpsbml.model.getPlugin('groups')
+    rp_pathway = groups.getGroup(pathway_id)
+    return rpsbml.readBRSYNTHAnnotation(rp_pathway.getAnnotation())

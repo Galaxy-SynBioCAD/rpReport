@@ -24,7 +24,7 @@ import rpTool
 ## run using HDD 3X less than the above function
 #
 #
-def runReport_hdd(input_tar, output_bytes, pathway_id='rp_pathway'):
+def runReport_hdd_csv(input_tar, output_bytes, pathway_id='rp_pathway'):
     header = ['Pathway Name',
               'Reaction',
               'Global Score',
@@ -55,6 +55,25 @@ def runReport_hdd(input_tar, output_bytes, pathway_id='rp_pathway'):
                 rpsbml = rpSBML.rpSBML(fileName)
                 rpsbml.readSBML(sbml_path)
                 rpTool.writeLine(rpsbml, csvfi, pathway_id)
+
+
+## run using HDD 3X less than the above function
+#
+#
+def runReport_hdd_json(input_tar, pathway_id='rp_pathway'):
+    #csvfi.writerow([i.encode('utf-8') for i in header])
+    toWrite = {}
+    with tempfile.TemporaryDirectory() as tmpOutputFolder:
+        with tempfile.TemporaryDirectory() as tmpInputFolder:
+            tar = tarfile.open(fileobj=input_tar, mode='r:xz')
+            tar.extractall(path=tmpInputFolder)
+            tar.close()
+            for sbml_path in glob.glob(tmpInputFolder+'/*'):
+                fileName = sbml_path.split('/')[-1].replace('.sbml', '').replace('.xml', '').replace('.rpsbml', '')
+                rpsbml = rpSBML.rpSBML(fileName)
+                rpsbml.readSBML(sbml_path)
+                toWrite[fileName] = rpTool.writeJSON(rpsbml, pathway_id)
+    return toWrite
 
 
 #######################################################
@@ -93,18 +112,44 @@ class RestQuery(Resource):
     def post(self):
         input_tar = request.files['input_tar']
         params = json.load(request.files['data'])
-        output_csv = io.StringIO()
         #output_csv = io.BytesIO()
         #### MEM ####
+        output = io.StringIO()
         #### HDD ####
         #weight_rp_steps, weight_fba, weight_thermo, pathway_id
-        runReport_hdd(input_tar, output_csv, str(params['pathway_id']))
+        '''
+        if params['output_type']=='csv':
+            runReport_hdd_csv(input_tar, output, str(params['pathway_id']))
+            ######## IMPORTANT #########
+            #output_csv.seek(0)
+            mem = io.BytesIO()
+            mem.write(output.getvalue().encode('utf-8'))
+            mem.seek(0)
+            output.close()
+            ############################
+            return send_file(mem, as_attachment=True, attachment_filename='rpReport.csv', mimetype='application/csv')
+        elif params['output_type']=='json':
+            toWrite = runReport_hdd_json(input_tar, str(params['pathway_id']))
+            with open(output, 'w') as fp:
+                json.dump(toWrite, fp)
+            ######## IMPORTANT #########
+            #output_csv.seek(0)
+            mem = io.BytesIO()
+            mem.write(output.getvalue().encode('utf-8'))
+            mem.seek(0)
+            output.close()
+            ############################
+            return send_file(mem, as_attachment=True, attachment_filename='rpReport.json', mimetype='application/json')
+        else:
+            logging.error('Cannot detect the output type: '+str(params['output_type']))
+        '''
+        runReport_hdd_csv(input_tar, output, str(params['pathway_id']))
         ######## IMPORTANT #########
         #output_csv.seek(0)
         mem = io.BytesIO()
-        mem.write(output_csv.getvalue().encode('utf-8'))
+        mem.write(output.getvalue().encode('utf-8'))
         mem.seek(0)
-        output_csv.close()
+        output.close()
         ############################
         return send_file(mem, as_attachment=True, attachment_filename='rpReport.csv', mimetype='application/csv')
 
