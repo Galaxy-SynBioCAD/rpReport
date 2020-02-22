@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python
 
 import sys
 sys.path.insert(0, '/home/')
@@ -41,14 +41,15 @@ def writeLine(rpsbml, csvfi, pathway_id='rp_pathway'):
                 getInfo(path_brs_dict, 'norm_dfG_uncert')]
     to_write.append(';'.join([str(i) for i in list(path_brs_dict.keys()) if i[:4]=='fba_']))
     to_write.append(';'.join([str(path_brs_dict[i]['value']) for i in list(path_brs_dict.keys()) if i[:4]=='fba_']))
-    to_write.append(';'.join([str(path_brs_dict[i]['value']) for i in list(path_brs_dict.keys()) if i[:8]=='norm_fba']))
+    #to_write.append(';'.join([str(path_brs_dict[i]['value']) for i in list(path_brs_dict.keys()) if i[:8]=='norm_fba']))
+    to_write.append(';'.join([str(path_brs_dict[i]) for i in list(path_brs_dict.keys()) if i[:8]=='norm_obj']))
     try:
         to_write.append(';'.join([str(i) for i in list(path_brs_dict['selenzyme'].keys())]))
         to_write.append(';'.join([str(path_brs_dict['selenzyme'][i]) for i in list(path_brs_dict['selenzyme'].keys())]))
     except (KeyError, AttributeError) as e:
         to_write.append('')
         to_write.append('')
-    csvfi.writerow(to_write) 
+    csvfi.writerow(to_write)
     ### reaction
     for member in rp_pathway.getListOfMembers():
         reaction = rpsbml.model.getReaction(member.getIdRef())
@@ -67,11 +68,12 @@ def writeLine(rpsbml, csvfi, pathway_id='rp_pathway'):
                     getInfo(reac_brs_dict, 'norm_dfG_uncert')]
         to_write.append(';'.join([str(i) for i in reac_brs_dict.keys() if i[:4]=='fba_']))
         to_write.append(';'.join([str(reac_brs_dict[i]['value']) for i in list(reac_brs_dict.keys()) if i[:4]=='fba_']))
-        to_write.append(';'.join([str(reac_brs_dict[i]['value']) for i in reac_brs_dict.keys() if i[:8]=='norm_fba']))
+        #to_write.append(';'.join([str(reac_brs_dict[i]['value']) for i in reac_brs_dict.keys() if i[:8]=='norm_fba']))
+        to_write.append(';'.join([str(reac_brs_dict[i]) for i in reac_brs_dict.keys() if i[:8]=='norm_fba']))
         try:
             to_write.append(';'.join([str(i) for i in reac_brs_dict['selenzyme'].keys()]))
             to_write.append(';'.join([str(reac_brs_dict['selenzyme'][i]) for i in reac_brs_dict['selenzyme'].keys()]))
         except (KeyError, AttributeError) as e:
             to_write.append('')
             to_write.append('')
-        csvfi.writerow(to_write) 
+        csvfi.writerow(to_write)
