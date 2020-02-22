@@ -37,13 +37,12 @@ def runReport_hdd(inputTar, csvfi_path, pathway_id='rp_pathway'):
     with open(csvfi_path, 'w') as infi:
         csvfi = csv.writer(infi, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         csvfi.writerow(header)
-        with tempfile.TemporaryDirectory() as tmpOutputFolder:
-            with tempfile.TemporaryDirectory() as tmpInputFolder:
-                tar = tarfile.open(fileobj=inputTar, mode='r:xz')
-                tar.extractall(path=tmpInputFolder)
-                tar.close()
-                for sbml_path in glob.glob(tmpInputFolder+'/*'):
-                    fileName = sbml_path.split('/')[-1].replace('.sbml', '').replace('.xml', '').replace('.rpsbml', '')
-                    rpsbml = rpSBML.rpSBML(fileName)
-                    rpsbml.readSBML(sbml_path)
-                    rpTool.writeLine(rpsbml, csvfi, pathway_id)
+        with tempfile.TemporaryDirectory() as tmpInputFolder:
+            tar = tarfile.open(inputTar, mode='r:xz')
+            tar.extractall(path=tmpInputFolder)
+            tar.close()
+            for sbml_path in glob.glob(tmpInputFolder+'/*'):
+                fileName = sbml_path.split('/')[-1].replace('.sbml', '').replace('.xml', '').replace('.rpsbml', '')
+                rpsbml = rpSBML.rpSBML(fileName)
+                rpsbml.readSBML(sbml_path)
+                rpTool.writeLine(rpsbml, csvfi, pathway_id)
