@@ -28,7 +28,7 @@ Advanced options:
 To build the image using the Dockerfile, use the following command:
 
 ```
-docker build -t brsynth/rpreport-standalone:dev .
+docker build -t brsynth/rpreport-standalone .
 ```
 
 ### Running the tests
@@ -36,7 +36,7 @@ docker build -t brsynth/rpreport-standalone:dev .
 To run the test, untar the test.tar.xz file and run the following command:
 
 ```
-python run,py -input test/test_rpReport.tar -input_format tar -input_sbol test/test.sbol -output test/test_output.tar
+python run.py -input test/test_in.tar -input_format tar -output test/test_output.tar
 ```
 
 ## Contributing
