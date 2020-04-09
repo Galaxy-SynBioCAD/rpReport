@@ -6,6 +6,7 @@ import sys
 import csv
 import tarfile
 import glob
+import logging
 
 sys.path.insert(0, '/home/')
 import rpSBML
@@ -38,11 +39,15 @@ def runReport_hdd(inputTar, csvfi_path, pathway_id='rp_pathway'):
         csvfi = csv.writer(infi, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         csvfi.writerow(header)
         with tempfile.TemporaryDirectory() as tmpInputFolder:
-            tar = tarfile.open(inputTar, mode='r:xz')
+            tar = tarfile.open(inputTar, mode='r')
             tar.extractall(path=tmpInputFolder)
             tar.close()
+            if len(glob.glob(tmpInputFolder+'/*'))==0:
+                logging.error('Input file is empty')
+                return False
             for sbml_path in glob.glob(tmpInputFolder+'/*'):
                 fileName = sbml_path.split('/')[-1].replace('.sbml', '').replace('.xml', '').replace('.rpsbml', '')
                 rpsbml = rpSBML.rpSBML(fileName)
                 rpsbml.readSBML(sbml_path)
                 rpTool.writeLine(rpsbml, csvfi, pathway_id)
+    return True
