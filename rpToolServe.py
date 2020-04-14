@@ -12,7 +12,8 @@ sys.path.insert(0, '/home/')
 import rpSBML
 import rpTool
 
-
+logging.disable(logging.INFO)
+logging.disable(logging.WARNING)
 
 ## run using HDD 3X less than the above function
 #
