@@ -10,10 +10,16 @@ import rpSBML
 #
 def getInfo(brs_dict, key):
     try:
-        return brs_dict[key]['value']
+        toRet = brs_dict[key]['value']
+        if toRet=={}:
+            return ''
+        return str(toRet)
     except (KeyError, TypeError) as e:
         try:
-            return brs_dict[key]
+            toRet = brs_dict[key]
+            if toRet=={}:
+                return ''
+            return str(toRet)
         except (KeyError, TypeError) as e:
             return ''
 
