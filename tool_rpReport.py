@@ -20,7 +20,7 @@ if __name__ == "__main__":
     parser.add_argument('-input', type=str)
     parser.add_argument('-input_format', type=str)
     parser.add_argument('-output', type=str)
-    parser.add_argument('-pathway_id', type=str)
+    parser.add_argument('-pathway_id', type=str, default='rp_pathway')
     params = parser.parse_args()
     #sbml read the different mode
     if params.input_format=='tar':
