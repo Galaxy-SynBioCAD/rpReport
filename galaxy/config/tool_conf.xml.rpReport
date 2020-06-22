@@ -1,0 +1,3 @@
+  <section id="sbc" name="SynBioCAD">
+    <tool file="rpReport/code/wrap_rpReport.xml" />
+  </section>

@@ -1,0 +1,84 @@
+<tool id="rpReport" name="Report" version="0.1">
+  <description>CSV report</description>
+  <requirements>
+    <container type="docker">brsynth/rpreport-standalone:dev</container>
+  </requirements>
+  <command detect_errors="exit_code"><![CDATA[
+    '$__tool_directory__/tool_rpReport.py' -input '$input_type.input' -input_format '$input_type.input_format' -output '$output' -pathway_id '$adv.pathway_id' 
+  ]]></command>
+  <inputs>
+    <conditional name="input_type">
+      <param name="input_format" type="select" label="Input/output format">
+        <option value="tar" selected="True">TAR</option>
+        <option value="sbml">SBML</option>
+      </param>
+      <when value="tar">
+        <param name="input" type="data" format="tar" label="Input file" />
+      </when>
+      <when value="sbml">
+        <param name="input" type="data" format="sbml" label="Input file" />
+      </when>
+    </conditional>
+		<section name="adv" title="Advanced Options" expanded="false">
+			<param name="pathway_id" type="text" value="rp_pathway" label="SBML heterologous pathway ID" />
+		</section>
+  </inputs>
+  <outputs>
+    <data name="output" format="csv" label="Report" />
+  </outputs>
+  <help><![CDATA[
+Report
+========
+
+Given a collection or a single SBML file, this tool generates a CSV file output with all pathway information from the analysis tools (thermodynamics, FBA, etc). You can also specify the heterologous reactions and chemical species by providing the name of the heterologous pathway or SBML file ID.
+
+Input
+-----
+
+Required:
+
+
+* **-input**\ : (string) Path to the input file.
+* **-input_format**\ : (string) Format of the input (tar or sbml)
+
+Advanced options:
+
+
+* **-pathway_id**\ : (string, default: rp_pathway) The SBML groups ID that points to the heterologous reactions and chemical species.
+
+Output
+------
+
+* **output**\ : (string) Path to the output CSV file
+
+Project Links
+---------------------
+
+* `GitHub <https://github.com/Galaxy-SynBioCAD/rpReport>`_
+
+Version
+----------
+
+0.1
+
+Authors
+-------
+
+
+* **Melchior du Lac**
+
+License
+-------
+
+`MIT <https://raw.githubusercontent.com/Galaxy-SynBioCAD/rpReport/standalone-dev/LICENSE>`_
+
+
+Acknowledgments
+---------------
+
+
+* Thomas Duigou
+* Joan Hérisson
+
+]]></help>
+</tool>
