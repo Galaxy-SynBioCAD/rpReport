@@ -13,6 +13,7 @@ import logging
 import shutil
 import docker
 
+import glob
 
 ##
 #
@@ -20,7 +21,7 @@ import docker
 def main(inputfile,
          input_format,
          output,
-         pathway_id):
+         pathway_id='rp_pathway'):
     docker_client = docker.from_env()
     image_str = 'brsynth/rpreport-standalone'
     try:
@@ -35,7 +36,8 @@ def main(inputfile,
             exit(1)
     with tempfile.TemporaryDirectory() as tmpOutputFolder:
         shutil.copy(inputfile, tmpOutputFolder+'/input.dat')
-        command = ['python /home/tool_rpReport.py',
+        command = ['python',
+                   '/home/tool_rpReport.py',
                    '-input',
                    '/home/tmp_output/input.dat',
                    '-input_format',
@@ -45,17 +47,16 @@ def main(inputfile,
                    '-pathway_id',
                    str(pathway_id)]
         container = docker_client.containers.run(image_str,
-                                                 command,
-                                                 detach=True,
+												 command,
+												 detach=True,
                                                  stderr=True,
-                                                 volumes={tmpOutputFolder+'/': {'bind': '/home/tmp_output', 'mode': 'rw'}})
+												 volumes={tmpOutputFolder+'/': {'bind': '/home/tmp_output', 'mode': 'rw'}})
         container.wait()
         err = container.logs(stdout=False, stderr=True)
-        err_str = err.decode('utf-8')
-        if not 'ERROR' in err_str:
-            shutil.copy(tmpOutputFolder+'/output.dat', outputTar)
-        else:
-            print(err_str)
+        print(err)
+        print('-------------------------')
+        print(glob.glob(tmpOutputFolder+'/*'))
+        shutil.copy(tmpOutputFolder+'/output.dat', output)
         container.remove()
 
 
