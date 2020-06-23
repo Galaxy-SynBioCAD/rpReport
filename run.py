@@ -53,10 +53,11 @@ def main(inputfile,
 												 volumes={tmpOutputFolder+'/': {'bind': '/home/tmp_output', 'mode': 'rw'}})
         container.wait()
         err = container.logs(stdout=False, stderr=True)
-        print(err)
-        print('-------------------------')
-        print(glob.glob(tmpOutputFolder+'/*'))
-        shutil.copy(tmpOutputFolder+'/output.dat', output)
+        err_str = err.decode('utf-8')
+        if not 'ERROR' in err_str:
+        	shutil.copy(tmpOutputFolder+'/output.dat', output)
+        else:
+            print(err_str)
         container.remove()
 
 
