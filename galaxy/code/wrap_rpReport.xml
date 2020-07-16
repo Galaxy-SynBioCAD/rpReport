@@ -1,7 +1,7 @@
 <tool id="rpReport" name="Report" version="0.1">
   <description>CSV report</description>
   <requirements>
-    <container type="docker">brsynth/rpreport-standalone:dev</container>
+    <container type="docker">brsynth/rpreport-standalone</container>
   </requirements>
   <command detect_errors="exit_code"><![CDATA[
     '$__tool_directory__/tool_rpReport.py' -input '$input_type.input' -input_format '$input_type.input_format' -output '$output' -pathway_id '$adv.pathway_id' 
