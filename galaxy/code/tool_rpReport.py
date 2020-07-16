@@ -1,10 +1,11 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 
 import tempfile
 import glob
 import os
 import tarfile
 import argparse
+import logging
 
 import sys
 sys.path.insert(0, '/home/')
