@@ -23,7 +23,7 @@ def main(inputfile,
          output,
          pathway_id='rp_pathway'):
     docker_client = docker.from_env()
-    image_str = 'brsynth/rpreport-standalone:v1'
+    image_str = 'brsynth/rpreport-standalone:v2'
     try:
         image = docker_client.images.get(image_str)
     except docker.errors.ImageNotFound:
