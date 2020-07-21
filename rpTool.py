@@ -1,17 +1,9 @@
 #!/usr/bin/python
 
 import sys
-sys.path.insert(0, '/home/')
 import rpSBML
 import logging
 
-logging.basicConfig(
-    #level=logging.DEBUG,
-    #level=logging.WARNING,
-    level=logging.ERROR,
-    format='%(asctime)s.%(msecs)03d %(levelname)s %(module)s - %(funcName)s: %(message)s',
-    datefmt='%d-%m-%Y %H:%M:%S',
-)
 
 ##
 #
@@ -40,6 +32,7 @@ def writeLine(rpsbml, csvfi, pathway_id='rp_pathway'):
     groups = rpsbml.model.getPlugin('groups')
     rp_pathway = groups.getGroup(pathway_id)
     path_brs_dict = rpsbml.readBRSYNTHAnnotation(rp_pathway.getAnnotation())
+    logging.debug('path_brs_dict: '+str(path_brs_dict))
     ### pathway
     to_write = [rpsbml.model.getId(),
                 'pathway',
@@ -55,8 +48,8 @@ def writeLine(rpsbml, csvfi, pathway_id='rp_pathway'):
                 getInfo(path_brs_dict, 'norm_dfG_uncert')]
     to_write.append(';'.join([str(i) for i in list(path_brs_dict.keys()) if i[:4]=='fba_']))
     to_write.append(';'.join([str(path_brs_dict[i]['value']) for i in list(path_brs_dict.keys()) if i[:4]=='fba_']))
-    #to_write.append(';'.join([str(path_brs_dict[i]['value']) for i in list(path_brs_dict.keys()) if i[:8]=='norm_fba']))
-    to_write.append(';'.join([str(path_brs_dict[i]) for i in list(path_brs_dict.keys()) if i[:8]=='norm_obj']))
+    to_write.append(';'.join([str(path_brs_dict[i]['value']) for i in list(path_brs_dict.keys()) if i[:8]=='norm_fba']))
+    #to_write.append(';'.join([str(path_brs_dict[i]) for i in list(path_brs_dict.keys()) if i[:8]=='norm_obj']))
     try:
         to_write.append(';'.join([str(i) for i in list(path_brs_dict['selenzyme'].keys())]))
         to_write.append(';'.join([str(path_brs_dict['selenzyme'][i]) for i in list(path_brs_dict['selenzyme'].keys())]))
