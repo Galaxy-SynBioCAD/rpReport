@@ -1,14 +1,22 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 
 import sys
 import rpSBML
 import logging
 
 
-##
-#
-#
 def getInfo(brs_dict, key):
+    """Extract the required info from the BRSynth annotation
+
+    :param brs_dict: The BRSynth dictionary
+    :param key: The key to extract the info from 
+
+    :type brs_dict: dict
+    :type key: str
+
+    :rtype: str
+    :return: The extracted value
+    """
     try:
         toRet = brs_dict[key]['value']
         if toRet=={}:
@@ -24,10 +32,20 @@ def getInfo(brs_dict, key):
             return ''
 
 
-##
-#
-#
 def writeLine(rpsbml, csvfi, pathway_id='rp_pathway'):
+    """Write the lines in the report from a rpSBML file
+
+    :param rpsbml: The input rpSBML object
+    :param csvfi: The csv output file
+    :param pathway_id: The id of the heterologous pathway
+
+    :type rpsbml: rpSBML
+    :type csvfi: csv.writer
+    :type pathway_id: str
+
+    :rtype: None
+    :return: None
+    """
     #loop through all the groups reactions
     groups = rpsbml.model.getPlugin('groups')
     rp_pathway = groups.getGroup(pathway_id)

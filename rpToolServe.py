@@ -7,8 +7,8 @@ import glob
 import logging
 
 logging.basicConfig(
-    level=logging.DEBUG,
-    #level=logging.WARNING,
+    #level=logging.DEBUG,
+    level=logging.WARNING,
     #level=logging.ERROR,
     format='%(asctime)s.%(msecs)03d %(levelname)s %(module)s - %(funcName)s: %(message)s',
     datefmt='%d-%m-%Y %H:%M:%S',
@@ -17,10 +17,20 @@ logging.basicConfig(
 import rpSBML
 import rpTool
 
-## run using HDD 3X less than the above function
-#
-#
 def runReport_hdd(inputTar, csvfi_path, pathway_id='rp_pathway'):
+    """Generate the csv report file
+
+    :param inputTar: Input TAR file
+    :param csvfi_path: Path to the output report file
+    :param pathway_id: The id of the pathway (Default: rp_pathway)
+
+    :type inputTar: str
+    :type csvfi_path: str
+    :type pathway_id: str
+
+    :rtype: bool
+    :return: The success or failure of the function
+    """
     header = ['Pathway Name', 
               'Reaction', 
               'Global Score', 
