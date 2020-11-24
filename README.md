@@ -28,7 +28,7 @@ Advanced options:
 To build the image using the Dockerfile, use the following command:
 
 ```
-docker build -t brsynth/rpreport-standalone:v2 .
+docker build -t brsynth/rpreport-standalone .
 ```
 
 ### Running the tests

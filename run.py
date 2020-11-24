@@ -35,7 +35,7 @@ def main(inputfile,
     :return: None
     """
     docker_client = docker.from_env()
-    image_str = 'brsynth/rpreport-standalone:v2'
+    image_str = 'brsynth/rpreport-standalone'
     try:
         image = docker_client.images.get(image_str)
     except docker.errors.ImageNotFound:
