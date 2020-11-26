@@ -1,9 +1,7 @@
 OLD/
-test/
 tool_rpReport.py
 rpSBML.py
-*.tar
-*.csv
+*.swp
 .ipynb_checkpoints/
 __pycache__/
 
